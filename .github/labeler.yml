@@ -1,0 +1,11 @@
+ci:
+  - '.github/**'
+
+build:
+ - 'Makefile'
+
+terraform:
+  - '**/.tf'
+
+documentation:
+  - '*.md'

@@ -18,7 +18,7 @@ variable "input_path" {
 
 variable "name" {
   type        = string
-  description = "The name of one of the state object."
+  description = "The name of the state object."
 }
 
 variable "next" {

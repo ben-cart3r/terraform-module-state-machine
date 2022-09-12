@@ -4,6 +4,6 @@ locals {
       Type = "Fail"
     },
     var.cause == null ? null : { Comment = var.cause },
-    var.error == null ? null : { InputPath : var.error },
+    var.error == null ? null : { InputPath = var.error },
   )
 }

@@ -1,3 +1,9 @@
+# task state sub-module
+
+Terraform sub-module to provide an easy to use interface for creating AWS Step Function `Task` states. The implementation obeys the interface described in the amazon-states-language documentation: 
+
+https://docs.aws.amazon.com/step-functions/latest/dg/amazon-states-language-task-state.html
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 

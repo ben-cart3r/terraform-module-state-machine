@@ -1,3 +1,9 @@
+# succeed state sub-module
+
+Terraform sub-module to provide an easy to use interface for creating AWS Step Function `Succeed` states. The implementation obeys the interface described in the amazon-states-language documentation: 
+
+https://docs.aws.amazon.com/step-functions/latest/dg/amazon-states-language-succeed-state.html
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 

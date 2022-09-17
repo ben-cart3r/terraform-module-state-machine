@@ -1,15 +1,16 @@
-TERRAFORM_VERSION		?= 1.1.7
-TERRAFORM_DOCS_VERSION	?= 0.16.0
-TFSEC_VERSION			?= v1.13.2-amd64
-CUR_DIR					:= $(shell pwd)# ${PWD} is incosistent in GitHub Actions
+TERRAFORM_VERSION           ?= 1.1.7
+TERRAFORM_DOCS_VERSION      ?= 0.16.0
+TFSEC_VERSION               ?= v1.13.2-amd64
+CUR_DIR                     := $(shell pwd)# ${PWD} is incosistent in GitHub Actions
+SUBMODULES_PREFIX           := states
 
 export
 
 clean:
-	rm -rf .terraform
+	rm -rf **/.terraform
 
 fmt:
-	docker run --platform=linux/amd64 \
+	docker run --rm --platform=linux/amd64 \
 		-v ${CUR_DIR}:/src \
 		-w /src \
 		hashicorp/terraform:${TERRAFORM_VERSION} fmt -recursive
@@ -28,7 +29,7 @@ docs:
 		/terraform-docs
 
 init-no-backend:
-	docker run --platform=linux/amd64 \
+	docker run --rm --platform=linux/amd64 \
 		-v ${CUR_DIR}:/src \
 		-v ${HOME}/.ssh:/root/.ssh/ \
 		-v ${HOME}/.gitconfig:/root/.gitconfig \
@@ -37,7 +38,23 @@ init-no-backend:
 		-backend=false
 
 validate: clean init-no-backend
-	docker run --platform=linux/amd64 \
+	docker run --rm --platform=linux/amd64 \
 		-v ${CUR_DIR}:/src \
 		-w /src \
 		hashicorp/terraform:${TERRAFORM_VERSION} validate
+
+validate-submodules:
+	for submodule in ${SUBMODULES_PREFIX}/*; do\
+		echo "Validating $${submodule}..."; \
+		docker run --rm --platform=linux/amd64 \
+			-v ${CUR_DIR}:/src \
+			-v ${HOME}/.ssh:/root/.ssh/ \
+			-v ${HOME}/.gitconfig:/root/.gitconfig \
+			-w /src/$${submodule} \
+			hashicorp/terraform:${TERRAFORM_VERSION} init \
+			-backend=false; \
+		docker run --rm --platform=linux/amd64 \
+			-v ${CUR_DIR}:/src \
+			-w /src/$${submodule} \
+			hashicorp/terraform:${TERRAFORM_VERSION} validate; \
+    done

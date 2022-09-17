@@ -31,6 +31,14 @@ repos:
         pass_filenames: false
         types: [terraform]
 
+      - id: terraform_validate_submodules
+        name: Terraform validate submodules
+        description: Validates all Terraform configuration files.
+        entry: make validate-submodules
+        language: system
+        pass_filenames: false
+        types: [terraform]
+
       - id: terraform_docs
         name: Generate Docs
         description: Generate terraform docs for module

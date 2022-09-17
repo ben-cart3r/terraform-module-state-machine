@@ -1,4 +1,4 @@
-# terraform-module-template
+# terraform-module-state-machine
 Current preferred layout and tooling for terraform modules
 
 ## Examples

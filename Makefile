@@ -1,7 +1,7 @@
 TERRAFORM_VERSION			?= 1.1.7
-TERRAFORM_DOCS_VERSION  	?= 0.16.0
+TERRAFORM_DOCS_VERSION  		?= 0.16.0
 TFSEC_VERSION				?= v1.13.2-amd64
-CUR_DIR 					:= $(shell pwd)# ${PWD} is incosistent in GitHub Actions
+CUR_DIR 				:= $(shell pwd)# ${PWD} is incosistent in GitHub Actions
 SUBMODULES_PREFIX			:= states
 
 export

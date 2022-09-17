@@ -7,7 +7,7 @@ SUBMODULES_PREFIX           := states
 export
 
 clean:
-	rm -rf **/.terraform
+	rm -rf ./**/.terraform*
 
 fmt:
 	docker run --rm --platform=linux/amd64 \
@@ -28,6 +28,18 @@ docs:
 		--output-mode inject \
 		/terraform-docs
 
+docs-submodules:
+	for submodule in ${SUBMODULES_PREFIX}/*; do\
+		echo "Generating docs for $${submodule}..."; \
+		docker run --rm --platform=linux/amd64 \
+			-v "$(CUR_DIR)/$${submodule}:/terraform-docs" \
+			quay.io/terraform-docs/terraform-docs:${TERRAFORM_DOCS_VERSION} markdown \
+			--output-file ./README.md \
+			--output-mode inject \
+			/terraform-docs; \
+	done
+
+
 init-no-backend:
 	docker run --rm --platform=linux/amd64 \
 		-v ${CUR_DIR}:/src \
@@ -43,7 +55,7 @@ validate: clean init-no-backend
 		-w /src \
 		hashicorp/terraform:${TERRAFORM_VERSION} validate
 
-validate-submodules:
+validate-submodules: clean
 	for submodule in ${SUBMODULES_PREFIX}/*; do\
 		echo "Validating $${submodule}..."; \
 		docker run --rm --platform=linux/amd64 \
@@ -57,4 +69,4 @@ validate-submodules:
 			-v ${CUR_DIR}:/src \
 			-w /src/$${submodule} \
 			hashicorp/terraform:${TERRAFORM_VERSION} validate; \
-    done
+	done
